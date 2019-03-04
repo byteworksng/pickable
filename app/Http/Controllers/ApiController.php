@@ -12,10 +12,12 @@ class ApiController extends Controller
 {
     // Todo: Module reminder assigner
 
-//    public function moduleReminderAssigner(Request $request){
+    public function moduleReminderAssigner(Request $request){
 //        $user = $this->exampleCustomer();
-//
-//    }
+        return Response::json($request->all(), 201);
+
+
+    }
 
     private function exampleCustomer(){
 
