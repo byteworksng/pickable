@@ -15,7 +15,7 @@ class ModuleReminderAssignerTest extends TestCase
      */
     public function testReminderAssigner()
     {
-        $response = $this->post('/api/module_reminder_assigner', ['email' => 'chitest@test.com']);
+        $response = $this->post('/api/module_reminder_assigner', ['contact_email' => 'chitest@test.com']);
         $response->assertStatus(201);
     }
 }
