@@ -3,12 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Http\Helpers\InfusionsoftHelper;
+use App\Module;
+use App\User;
 use Illuminate\Http\Request;
 use Response;
 
 class ApiController extends Controller
 {
     // Todo: Module reminder assigner
+
+//    public function moduleReminderAssigner(Request $request){
+//        $user = $this->exampleCustomer();
+//
+//    }
 
     private function exampleCustomer(){
 
