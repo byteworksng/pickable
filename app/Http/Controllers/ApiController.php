@@ -26,21 +26,19 @@ class ApiController extends Controller
         $status = 422;
         $response = false;
 
+
         if ($client) {
-            $reqisteredCourses = explode(',', $client['_Products']);
+            $registeredCourses = explode(',', $client['_Products']);
 
             // fetch next courses
-            $nextCourse = $this->nextCourse(
-                $this->loadCourseModules($reqisteredCourses[0]),
-                $this->fetchCompletedModules($email)
-            );
+            $nextCourse = $this->nextCourse($registeredCourses, $email);
 
             $tag = $this->makeTag($nextCourse);
 
             $response = $this->addTag($client['Id'], $this->fetchTagId($tag));
 
             if (false !== $response) {
-                $message = 'Reminder assigned successfully';
+                $message = $tag . ' assigned successfully';
                 $status = 201;
             }
 
@@ -117,7 +115,26 @@ class ApiController extends Controller
                      ->pluck('name');
     }
 
-    private function nextCourse(
+    private function nextCourse(array $registeredCourses, string $email): string
+    {
+        $course = '';
+
+        // we assume fifo
+        if (count($registeredCourses) > 0) {
+            $activeCourse = array_shift($registeredCourses);
+            $course = $this->processCourse(
+                $this->loadCourseModules($activeCourse),
+                $this->fetchCompletedModules($email)
+            );
+
+            !empty($course) ?: $this->nextCourse($registeredCourses, $email);
+
+        }
+
+        return $course;
+    }
+
+    private function processCourse(
         \Illuminate\Support\Collection $courseModules,
         \Illuminate\Support\Collection $completedModules
     ) {
