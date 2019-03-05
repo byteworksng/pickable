@@ -30,7 +30,7 @@ class Module extends Model
         $tagId = $this->fetchTagId($tag);
 
         return [
-            'success' => $this->addTag($client['Id'], $tagId),
+            'success' => $this->addTag($client->id, $tagId),
             'tag'     => $tag,
             'tagId'   => $tagId,
         ];

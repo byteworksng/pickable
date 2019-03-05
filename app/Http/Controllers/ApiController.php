@@ -29,13 +29,12 @@ class ApiController extends Controller
         $response = false;
 
         if ($client) {
-            $response = (new Module())->assignModule($client);
+            $result = (new Module())->assignModule($client);
 
-            if ($this->validateTagResponse($response, $email)) {
+            if ($this->validateTagResponse($result, $email)) {
                 // lets validate if the tag already exist
                 $response = true;
-                $message = $response['tag'] . ' assigned successfully';
-//                                $message = 'Reminder assigned successfully';
+                $message = $result['tag'] . ' assigned successfully';
                 $status = 201;
             }
         }

@@ -15,7 +15,7 @@ class Tag extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'description', 'name',
+        'id', 'description', 'name', 'tags_category_id'
     ];
 
     public function tags_category()

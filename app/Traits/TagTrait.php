@@ -26,6 +26,7 @@ trait TagTrait
 
         if (false === $response['success']) {
             $contactData = $this->getContactData($email);
+
             if (isset($contactData->groups)) {
                 $isValid = false !== strpos($contactData->groups, (string)$response['tagId']);
             }

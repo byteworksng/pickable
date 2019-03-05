@@ -11,10 +11,10 @@ class Contact extends Model
 
     public function map(array $attributes){
             return [
-                'id' => $attributes['Id'],
-                'products' => $attributes['_Products'],
-                'groups' => $attributes['Groups'],
-                'email' => $attributes['Email'],
+                'id' => $attributes['Id'] ?? null ,
+                'products' => $attributes['_Products'] ?? null,
+                'groups' => $attributes['Groups'] ?? null,
+                'email' => $attributes['Email'] ?? null,
             ];
     }
 

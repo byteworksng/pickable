@@ -24,7 +24,6 @@ trait InfusionsoftTrait
     {
         $infusionsoft = new InfusionsoftHelper();
         $contact = $infusionsoft->getContact($email);
-        dd($contact);
 
         return false !== $contact ? new Contact($contact) : null;
     }
