@@ -59,15 +59,19 @@ trait TagTrait
         $infusionsoft = new InfusionsoftHelper();
         $tags = $infusionsoft->getAllTags();
 
-        if ($tags){
+        if ($tags) {
             foreach ($tags->all() as $tag) {
+
+
+                $category = $tag['category'];
+                unset($tag['category']);
 
                 $savedTag = Tag::updateOrCreate(['id' => $tag->id], $tag->toArray());
 
-                if ($tag['category']) {
-                    $tagId = $tag['category']['id'];
+                if (isset($category)) {
+                    $tagId = $category['id'];
                     $tagCategories = TagCategory::updateOrCreate(
-                        ['id' => $tagId], $tag['category']
+                        ['id' => $tagId], $category
                     );
 
                     $savedTag->tags_category()
