@@ -38,4 +38,18 @@ class ModuleReminderAssignerTest extends TestCase
             'response' =>false
         ]);
     }
+
+    /**
+     * A basic test using unregistered user.
+     *
+     * @return void
+     */
+    public function testShouldFailEmailValidation()
+    {
+        $response = $this->post('/api/module_reminder_assigner', ['contact_email' => ['email' =>'chitest@test.com']]);
+        //expect redirect
+        $response->assertStatus(302);
+    }
+
+
 }

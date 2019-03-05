@@ -24,7 +24,7 @@ class AssignModuleReminderRequest extends FormRequest
     public function rules()
     {
         return [
-            'contact_email' => 'required|string'
+            'contact_email' => 'required|string|email'
         ];
     }
 }
