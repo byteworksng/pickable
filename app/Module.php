@@ -12,6 +12,12 @@ class Module extends Model
 
     use TagTrait, InfusionsoftTrait;
 
+
+    /**
+     * @param Contact $client
+     *
+     * @return array
+     */
     public function assignModule(Contact $client)
     {
 
@@ -31,6 +37,11 @@ class Module extends Model
     }
 
 
+    /**
+     * @param $email
+     *
+     * @return mixed
+     */
     private function fetchCompletedModules($email)
     {
         $user = User::with('completed_modules')
@@ -40,12 +51,23 @@ class Module extends Model
         return $user->completed_modules->pluck('name');
     }
 
+    /**
+     * @param $course
+     *
+     * @return mixed
+     */
     private function loadCourseModules($course)
     {
         return self::where('course_key', strtolower($course))
                    ->pluck('name');
     }
 
+    /**
+     * @param array $registeredCourses
+     * @param string $email
+     *
+     * @return string
+     */
     private function nextCourse(array $registeredCourses, string $email): string
     {
         $course = '';
@@ -66,6 +88,12 @@ class Module extends Model
         return $course;
     }
 
+    /**
+     * @param Collection $courseModules
+     * @param Collection $completedModules
+     *
+     * @return bool
+     */
     private function processCourse(
         Collection $courseModules,
         Collection $completedModules

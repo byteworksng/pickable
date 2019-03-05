@@ -15,7 +15,7 @@ class ModuleReminderAssignerTest extends TestCase
     use TagTrait;
     /**
      * A test for next module same course.
-     *
+     * @vcr testAssignReminderNextModuleSameCourse
      * @return void
      */
     public function testAssignReminderNextModuleSameCourse()
@@ -40,7 +40,7 @@ class ModuleReminderAssignerTest extends TestCase
 
     /**
      * A test for next module same course.
-     *
+     * @vcr testAssignReminderNextCourseAfterLastModule
      * @return void
      */
     public function testAssignReminderNextCourseAfterLastModule()
@@ -66,7 +66,7 @@ class ModuleReminderAssignerTest extends TestCase
 
     /**
      * A test for next module same course.
-     *
+     * @vcr testAssignReminderLastCourseLastModule
      * @return void
      */
     public function testAssignReminderLastCourseLastModule()
@@ -89,7 +89,7 @@ class ModuleReminderAssignerTest extends TestCase
 
     /**
      * A basic test using unregistered user.
-     *
+     * @vcr testAssignReminderForNonInfusionsoftContact
      * @return void
      */
     public function testAssignReminderForNonInfusionsoftContact()
@@ -104,7 +104,7 @@ class ModuleReminderAssignerTest extends TestCase
 
     /**
      * An email validation test.
-     *
+     * @vcr testShouldFailEmailValidation
      * @return void
      */
     public function testShouldFailEmailValidation()

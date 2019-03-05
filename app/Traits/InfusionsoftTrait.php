@@ -15,6 +15,11 @@ use App\Http\Helpers\InfusionsoftHelper;
 trait InfusionsoftTrait
 {
 
+    /**
+     * @param string $email
+     *
+     * @return Contact|null
+     */
     public function getContactData(string $email): ?Contact
     {
         $infusionsoft = new InfusionsoftHelper();

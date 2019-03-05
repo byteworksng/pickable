@@ -30,6 +30,7 @@ class ApiController extends Controller
 
         if ($client) {
             $response = (new Module())->assignModule($client);
+
             if ($this->validateTagResponse($response, $email)) {
                 // lets validate if the tag already exist
                 $response = true;
