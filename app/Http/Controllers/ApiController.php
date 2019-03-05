@@ -34,10 +34,13 @@ class ApiController extends Controller
             $nextCourse = $this->nextCourse($registeredCourses, $email);
 
             $tag = $this->makeTag($nextCourse);
+            $tagId = $this->fetchTagId($tag);
 
-            $response = $this->addTag($client['Id'], $this->fetchTagId($tag));
+            $response = $this->addTag($client['Id'], $tagId);
 
-            if (false !== $response) {
+            if (true === $response || (false === $response && $this->validateTag($tagId, $email))) {
+                // lets validate if the tag already exist
+                $response = true;
                 $message = $tag . ' assigned successfully';
                 $status = 201;
             }
@@ -49,6 +52,16 @@ class ApiController extends Controller
 
     }
 
+    private function validateTag($tagId, $email)
+    {
+        $contactData = $this->getContactData($email);
+        $isValid = false;
+        if (array_key_exists('Groups', $contactData)) {
+            $isValid = false !== strpos($contactData['Groups'], (string)$tagId);
+        }
+
+        return $isValid;
+    }
 
     private function fetchTagId($tag)
     {
@@ -127,9 +140,10 @@ class ApiController extends Controller
                 $this->fetchCompletedModules($email)
             );
 
-            !empty($course) ?: $this->nextCourse($registeredCourses, $email);
+            !empty($course) ?: $course = $this->nextCourse($registeredCourses, $email);
 
         }
+
 
         return $course;
     }
@@ -143,10 +157,18 @@ class ApiController extends Controller
         // assumption is latest is last record inserted
         $last = $completedModules->last();
         $remainingCourse = $courseModules->diff($completedModules);
+
         $key = $courseModules->search($last);
 
+
         if (false !== $key && $remainingCourse->has($key + 1)) {
+            // lets switch to the next module
             $nextCourse = $remainingCourse[$key + 1];
+        }
+
+        if (false === $key && count($remainingCourse) > 0) {
+            // lets switch to the next course and first module
+            $nextCourse = $remainingCourse[0];
         }
 
         return $nextCourse;
