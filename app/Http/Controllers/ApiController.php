@@ -41,7 +41,8 @@ class ApiController extends Controller
             if (true === $response || (false === $response && $this->validateTag($tagId, $email))) {
                 // lets validate if the tag already exist
                 $response = true;
-                $message = $tag . ' assigned successfully';
+//                $message = $tag . ' assigned successfully';
+                $message = 'Reminder assigned successfully';
                 $status = 201;
             }
 
