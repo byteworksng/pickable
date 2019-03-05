@@ -1,0 +1,25 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Tag extends Model
+{
+
+    protected $table = 'tags';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'id', 'description', 'name',
+    ];
+
+    public function tags_category()
+    {
+        return $this->belongsTo(TagCategory::class, 'tags_category_id');
+    }
+}
