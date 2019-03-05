@@ -2,9 +2,8 @@
 
 use Illuminate\Database\Seeder;
 
-class InsoftTagsSeeder extends Seeder
+class UserTableSeeder extends Seeder
 {
-    use \App\Traits\TagTrait;
     /**
      * Run the database seeds.
      *
@@ -12,6 +11,6 @@ class InsoftTagsSeeder extends Seeder
      */
     public function run()
     {
-        $this->fetchTags();
+        factory(\App\User::class)->create();
     }
 }

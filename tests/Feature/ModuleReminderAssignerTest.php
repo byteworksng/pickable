@@ -2,24 +2,87 @@
 
 namespace Tests\Feature;
 
+use App\Http\Helpers\InfusionsoftHelper;
+use App\Module;
+use App\Traits\TagTrait;
+use App\User;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ModuleReminderAssignerTest extends TestCase
 {
+    use TagTrait;
     /**
-     * A basic test using registered user.
+     * A test for next module same course.
      *
      * @return void
      */
-    public function testAssignReminderForInfusionsoftContact()
+    public function testAssignReminderNextModuleSameCourse()
     {
 
-        $response = $this->post('/api/module_reminder_assigner', ['contact_email' => '5c7d32e41490e@test.com']);
+        $user = factory(User::class)->create();
+
+        // attach IPA M1-3 & M5
+        $user->completed_modules()->attach(Module::where('course_key', 'ipa')->limit(3)->get());
+        $user->completed_modules()->attach(Module::where('name', 'IPA Module 5')->first());
+
+        $expectedTag  = 'IPA Module 6';
+
+
+        $response = $this->post('/api/module_reminder_assigner', ['contact_email' => $user->email]);
         $response->assertStatus(201);
         $response->assertJson([
-            'message'=> 'Reminder assigned successfully',
+            'message'=> $this->makeTag($expectedTag) . ' assigned successfully',
+            'response' => true
+        ]);
+    }
+
+    /**
+     * A test for next module same course.
+     *
+     * @return void
+     */
+    public function testAssignReminderNextCourseAfterLastModule()
+    {
+
+        $user = factory(User::class)->create();
+
+        // attach IPA M1-3 & M5
+        $user->completed_modules()->attach(Module::where('course_key', 'ipa')->limit(3)->get());
+        $user->completed_modules()->attach(Module::where('name', 'IPA Module 7')->first());
+
+        $expectedTag  = 'IEA Module 1';
+
+
+        $response = $this->post('/api/module_reminder_assigner', ['contact_email' => $user->email]);
+        $response->assertStatus(201);
+        $response->assertJson([
+            'message'=> $this->makeTag($expectedTag) . ' assigned successfully',
+            'response' => true
+        ]);
+    }
+
+
+    /**
+     * A test for next module same course.
+     *
+     * @return void
+     */
+    public function testAssignReminderLastCourseLastModule()
+    {
+
+        $user = factory(User::class)->create();
+
+        // attach IPA M1-3 & M5
+        $user->completed_modules()->attach(Module::where('course_key', 'ipa')->limit(7)->get());
+        $user->completed_modules()->attach(Module::where('course_key', 'iea')->limit(7)->get());
+
+
+        $response = $this->post('/api/module_reminder_assigner', ['contact_email' => $user->email]);
+        $response->assertStatus(201);
+        $response->assertJson([
+            'message'=> $this->makeTag() . ' assigned successfully',
             'response' => true
         ]);
     }
@@ -40,7 +103,7 @@ class ModuleReminderAssignerTest extends TestCase
     }
 
     /**
-     * A basic test using unregistered user.
+     * An email validation test.
      *
      * @return void
      */

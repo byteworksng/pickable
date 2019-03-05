@@ -14,10 +14,19 @@ use Faker\Generator as Faker;
 */
 
 $factory->define(App\User::class, function (Faker $faker) {
+
+    $email = $faker->unique()->safeEmail;
+
+    $infusionsoft = new \App\Http\Helpers\InfusionsoftHelper();
+    $infusionsoft->createContact([
+        'Email'     => $email,
+        "_Products" => 'ipa,iea',
+    ]);
+
     return [
         'name' => $faker->name,
-        'email' => $faker->unique()->safeEmail,
-        'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
+        'email' => $email,
+        'password' => bcrypt('iphonephoto'),
         'remember_token' => str_random(10),
     ];
 });
